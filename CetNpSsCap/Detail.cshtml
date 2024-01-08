@@ -1,0 +1,302 @@
+﻿@using NavesPortalforWebWithCoreMvc.Common;
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Notifications;
+@model NavesPortalforWebWithCoreMvc.Models.TNAV_CET_NP_SS_CAP;
+
+@{
+    ViewBag.PageTitle = "CET > N/P-SS-CAP New/Detail";
+    ViewBag.PlatformName = "CET";
+    ViewBag.MenuName = "Certificate of Condition Assessment";
+    ViewBag.FunctionName = "New";
+}
+
+@section ContentsSection{
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="ps-2 pageContentTitle">
+            <h3>Certificate of Condition Assessment</h3>
+        </div>
+        <div></div>
+    </div>
+
+    <form asp-controller="CetNpSsCap" asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Work ID</label>
+            <div class="col-sm-4">
+                <ejs-autocomplete id="acWorkId" dataSource="@ViewBag.WorkId" ejs-for="WORK_ID" placeholder="Select Work ID..." autofill="true" filterType="Contains"
+                                    cssClass="inputable"
+                                    highlight="true"
+                                    suggestionCount="20"
+                                    minLength="3"
+                                    popupHeight="300px"
+                                    popupWidth="1000px"
+                                    headerTemplate="@Html.Raw("<div class=\"row m-2 p-1 fs-5 border-bottom border-2 bg-create-title\"><div class=\"col-2\">Work Id</div><div class=\"col-3\">Project Id</div><div class=\"col-3\">Project Title</div><div class=\"col-2\">Job Id</div></div>")"
+                                    itemTemplate="@Html.Raw("<div class=\"row border-bottom border-1\"><div class=\"col-2\">${WORK_ID}</div><div class=\"col-3\">${PROJECT_ID}</div><div class=\"col-3\">${PROJECT_TITLE}</div><div class=\"col-2\">${JOB_ID}</div></div>")"
+                                    change="OnChangeSelectWorkId">
+                    <e-autocomplete-fields value="WORK_ID"></e-autocomplete-fields>
+                </ejs-autocomplete>
+            </div>
+           <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Statement No.</label>
+           <div class="col-sm-2">
+               <ejs-textbox type="text" readonly id="txtStatNo" cssClass="e-outline text-left" disabled></ejs-textbox>                          
+           </div>
+           <div class="col-sm-2 text-end">
+                <a id="btnCertNo" style="width:130px" class="btn btn-info btn-custom rounded-pill waves-effect waves-light">Create Cert No.</a>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Date of Commencement</label>
+            <div class="col-sm-4">
+                 <ejs-datepicker id="dpCommenDate" ejs-for="COMMENCEMENT_DATE" format="yyyy-MM-dd" cssClass="inputable"></ejs-datepicker>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Date of Issue</label>
+            <div class="col-sm-4">
+                <ejs-datepicker id="dpIssueDate" ejs-for="DATE_OF_ISSUE" format="yyyy-MM-dd" cssClass="inputable"></ejs-datepicker>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Vessel Name</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="VESSEL_NAME" id="txtVesselName" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+             <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Ship No.</label>
+            <div class="col-sm-4">
+               <ejs-textbox type="text" ejs-for="SHIP_NUMBER" id="txtShipNo" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Class</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="CLASS" id="txtClass" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+             <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Displacement(Full)</label>
+            <div class="col-sm-1">
+               <ejs-textbox type="text" ejs-for="DISPLACEMENT_LETTER" id="txtDispl_A" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+            <div class="col-sm-2">
+               <ejs-textbox type="text" ejs-for="DISPLACEMENT_SELECT" id="txtDispl_B" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+            <div class="col-sm-1">
+               <ejs-textbox type="text" ejs-for="DISPLACEMENT_UNIT" id="txtDispl_C" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+        </div>
+
+         <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Quantity</label>
+            <div class="col-sm-2">
+                <ejs-textbox type="text" ejs-for="QUANTITY_NUMBER" id="txtQuantity" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+             <div class="col-sm-2">
+                <ejs-dropdownlist id="drQuantity" ejs-for="QUANTITY_UNIT_SELECT" dataSource="@ViewBag.QuantityType" placeholder="--Unit--" popupHeight="220px" cssClass="inputable">
+                    <e-dropdownlist-fields text="Text" value="Value"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>
+             <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Inspection Place</label>
+            <div class="col-sm-4">
+               <ejs-textbox type="text" id="txtInpsPl" ejs-for="INSPECTION_PLACE" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+        </div>    
+        
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title border-right" style="height:170px">Overall Rating</label>
+            <div class="col-sm-2"> 
+                <ejs-checkbox id="chkForHCAP" ejs-for="CHECK_FOR_HCAP" checked="false" label="HCAP For Hull Structure" cssClass="my-3"></ejs-checkbox>                                   
+                <ejs-checkbox id="chkForMCAP" ejs-for="CHECK_FOR_MCAP" checked="false" label="MCAP For Machinery Equipment" cssClass="my-2"></ejs-checkbox>                                           
+                <ejs-checkbox id="chkForECAP" ejs-for="CHECK_FOR_ECAP" checked="false" label="ECAP For Eelectric Equipment" cssClass="my-3"></ejs-checkbox>
+            </div>  
+                   
+            <div class="col-sm-2">
+                   <ejs-dropdownlist id="drForHCAP" ejs-for="SELECT_LEVEL_FOR_HCAP" dataSource="@ViewBag.SelectNumberLevel" popupHeight="220px" cssClass="inputable my-1">
+                   <e-dropdownlist-fields text="Text" value="Value"></e-dropdownlist-fields>
+                   </ejs-dropdownlist> 
+                   
+                   <ejs-dropdownlist id="drForMCAP" ejs-for="SELECT_LEVEL_FOR_MCAP" dataSource="@ViewBag.SelectNumberLevel" popupHeight="220px" cssClass="inputable my-1">
+                   <e-dropdownlist-fields text="Text" value="Value"></e-dropdownlist-fields>
+                   </ejs-dropdownlist>   
+                   
+                   <ejs-dropdownlist id="drForECAP" ejs-for="SELECT_LEVEL_FOR_ECAP" dataSource="@ViewBag.SelectNumberLevel" popupHeight="220px" cssClass="inputable my-1">
+                   <e-dropdownlist-fields text="Text" value="Value"></e-dropdownlist-fields>
+                   </ejs-dropdownlist>
+            </div>
+                  
+            <div class="col-sm-2">
+                   <ejs-textbox type="text" readonly id="txtForHCAP" ejs-for="OVERALL_RATING_RESULT_A" cssClass="e-outline text-left my-1" disabled></ejs-textbox>                            
+                   <ejs-textbox type="text" readonly id="txtForMCAP" ejs-for="OVERALL_RATING_RESULT_B" cssClass="e-outline text-left my-1" disabled></ejs-textbox>                        
+                   <ejs-textbox type="text" readonly id="txtForECAP" ejs-for="OVERALL_RATING_RESULT_C" cssClass="e-outline text-left my-1" disabled></ejs-textbox>
+            </div>
+        </div>
+       
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title" style="height:120px">Head Contents</label>
+            <div class="col-sm-10">
+                <div class="col-4 mb-1">
+                    <ejs-dropdownlist id="drHeadCon" ejs-for="HEAD_CONTENTS_SELECT" dataSource="@ViewBag.HeadConSelect" popupHeight="220px" placeholder="--Select--" cssClass="inputable">
+                        <e-dropdownlist-fields text="Text" value="Value"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                </div>
+                <div>
+                    This is to Certify that Korean Register has carried out a condition assessment at the request of the Republic of Korean Navy for the following <div></div> Ship on the basis of Guidance on <div></div> Ship Condition Assessment.                  
+                </div>
+            </div>          
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title" style="height:120px">Intermediate Contents</label>
+            <div class="col-sm-10">
+                <div class="col-4 mb-1">
+                    <ejs-dropdownlist id="drInterCon" ejs-for="INTERMEDIATE_CONTENTS_SELECT" dataSource="@ViewBag.InterConSelect" popupHeight="220px" placeholder="--Select--" cssClass="inputable">
+                        <e-dropdownlist-fields text="Text" value="Value"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                </div>
+                <div>
+                    For more detailed information of the ratings, the follwing <div></div> report is to be referred.Assessment Program of this...                 
+                </div>
+            </div>          
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title" style="height:120px">Tail Contents</label>
+            <div class="col-sm-10">
+                <div class="col-4 mb-1">
+                    <ejs-dropdownlist id="drTailCon" ejs-for="TAIL_CONTENTS_SELECT" dataSource="@ViewBag.TailConSelect" popupHeight="220px" placeholder="--Select--" cssClass="inputable">
+                        <e-dropdownlist-fields text="Text" value="Value"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                </div>
+                <div>
+                    The <div></div> Ship Condition Assessment Program of the above mentioned ship was commenced <div></div> and completed <div></div> including the condition survey at Pyeongtaek Slipway and Quay. Assessment...
+                </div>
+            </div>          
+        </div>
+
+         <div class="align-items-center mx-0 mb-4 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Annex to Cert</label>
+            <div class="col-sm-10">
+                <button type="button" asp-controller="CetNpSsCap" action="InsertModifyPopup" class="btn btn-purple btn-custom rounded-pill waves-effect waves-light" style="width:130px" id="btnModiSert">Insert/Modify</button>
+            </div>    
+         </div>
+        
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="ps-2 pageContentTitle">
+                <h3>Approval Information</h3>
+            </div>
+            <div></div>
+        </div>
+    <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Approver</label>
+            <div class="col-sm-2">
+                <ejs-dropdownlist id="CetSelectGM" ejs-for="APPROVER" dataSource="@ViewBag.Approver" cssClass="inputable"
+                    change="GMonChange" placeholder="Select GM...">
+                    <e-dropdownlist-fields text="USER_NAME_E" value="USER_ID"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>
+             <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Surveyor</label>
+            <div class="col-sm-4">
+               @Model.SURVEYOR_NAME
+               @Model.SURVEYOR_NUMBER
+            </div>
+    </div>
+
+        <div class="d-none">
+            <input type="hidden" id="hdIsClickSave" />
+            <input type="hidden" asp-for="NP_SS_CAP_IDX" />
+        </div>
+
+    <div class="pt-2 pe-0">
+        <div class="float-start row g-0">
+            <div class="col-auto pe-2">
+                <button type="button" id="btnPreview" style="width:130px" class="btn btn-success btn-medium rounded-pill wasves-effect waves-light">Preview</button>
+            </div>
+            <div class="col-auto pe-2">
+                <button type="button" id="btnLog" style="width:130px" class="btn btn-success btn-medium rounded-pill wasves-effect waves-light">Show Log</button>
+            </div>
+            <div class="col-auto pe-2">
+                <button type="button" id="btnChr" style="width:160px" class="btn btn-success btn-medium rounded-pill wasves-effect waves-light">Special Character</button>
+            </div>
+            <div class="col-auto pe-2">
+                <button type="button" id="btnCert" style="width:200px" class="btn btn-success btn-medium rounded-pill wasves-effect waves-light">Request for Certification</button>
+            </div>
+            <div class="col-auto">
+            </div>
+        </div>
+        <div class="float-end row g-0">
+            <div class="col-auto pe-2">
+            </div>
+            <div class="col-auto pe-2">
+                <button type="submit" id="btnSave" class="btn btn-primary btn-medium rounded-pill wasves-effect waves-light">Save</button>
+            </div>
+             <div class="col-auto pe-2">
+                <button id="btnCopy" class="btn btn-primary btn-medium rounded-pill wasves-effect waves-light">Copy</button>
+            </div>
+            <div class="col-auto pe-2">
+                <button id="btnDelete" class="btn btn-danger btn-medium rounded-pill wasves-effect waves-light">Delete</button>
+            </div>
+        </div>
+    </div>
+    </form>
+}
+
+<script>
+    function OnChangeSelectWorkId(args) { 
+        if ($("#acWorkId").is(":focus") == false) {
+            return;
+        }
+
+        if (args.value.length >= 3) {
+            var acWorkId = document.getElementById('acWorkId').ej2_instances[0];
+            var workIdText = acWorkId.itemData.PROJECT_ID + "&nbsp" + acWorkId.itemData.PROJECT_TITLE + "&nbsp" + acWorkId.itemData.JOB_ID;
+        }
+    }
+
+    function GMonChange(args) { 
+        if ($("#CetSelectGM").is(":focus") == false) { 
+            return;
+        }
+
+        if (args.value.length >= 3) { 
+            var CetSelectGM = document.getElementById('CetSelectGM').ej2_instances[0];
+            return;
+        }  
+    }
+
+</script>
+
+
+    @section Scripts {
+    <script>
+        // Show Log Button
+        $("#btnModiSert").click(function() {
+
+            var W = (screen.availWidth * 0.5);
+            var H = 1000;
+
+            var popupX = (screen.availWidth / 2) - (W / 2);
+            var popupY = (screen.availHeight / 2) - (H / 2);
+
+            var opt = "status=no,width=" + W + "px, height=" + H + "px, left=" + popupX + ", top=" + popupY + ",scrollbars=yes";
+            var popup = window.open('@Url.Action("InsertModifyPopup", "CetNpSsCap", new{})', 'LogList', opt); 
+
+            popup.opener = window;
+            popup.focus();
+        });
+
+        // Special Character window Popup
+        $("#btnChr").click(function() {
+
+            var W = (screen.availWidth * 0.4);
+            var H = 500;
+
+            var popupX = (screen.availWidth / 2) - (W / 2);
+            var popupY = (screen.availHeight / 2) - (H / 2);
+
+            var opt = "status=no,width=" + W + "px, height=" + H + "px, left=" + popupX + ", top=" + popupY + ",scrollbars=yes";
+            var popup = window.open('@Url.Action("SpecialCharPopup", "CetNpSsCap", new{})', 'LogList', opt);
+
+            popup.opner = window;
+            popup.focus();
+        });
+
+    </script>
+    }

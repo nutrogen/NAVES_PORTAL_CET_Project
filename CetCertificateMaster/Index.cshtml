@@ -1,0 +1,80 @@
+﻿@using Syncfusion.EJ2
+
+@{
+    ViewBag.PageTitle = "CET > Certificate Master";
+    ViewBag.PlatformName = "CET";
+    ViewBag.MenuName = "Certificate Master";
+    ViewBag.FunctionName = "List";
+}
+
+@section SearchSection{
+    <form asp-action="Index" asp-controller="DisReferenceDocument" method="post">
+        <div class="row align-items-center m-0">
+            <div class="col">
+                <ejs-textbox id="txtSearchBox" cssClass="e-outline inputable" placeholder="Search Keyword..."></ejs-textbox>
+            </div>
+            <div class="col-auto">
+                Period
+            </div>
+            <div class="col-2">
+                <ejs-datepicker id="dpStartDate" value="@ViewBag.StartDate" value="@DateTime.Now.AddYears(-1).ToShortDateString()" format="yyyy-MM-dd" placeholder="Start Date..." cssClass="inputable"></ejs-datepicker>
+            </div>
+            <div class="col-2">
+                <ejs-datepicker id="dpEndDate" value="@ViewBag.EndDate" value="@DateTime.Now.ToShortDateString()" format="yyyy-MM-dd" placeholder="End Date..." cssClass="inputable"></ejs-datepicker>
+            </div>
+            <div class="col">
+                <button asp-controller="PmsProjectIdManagement" asp-action="Index" id="Search" type="submit" class="btn btn-purple btn-medium rounded-pill waves-effect waves-light">Search</button>
+            </div>
+        </div>
+    </form>
+}
+
+    @section ContentsSection{
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="ps-2 pageContentTitle">
+            <h3>@ViewBag.MenuName</h3>
+        </div>
+        <div class="ps-1">
+            <a asp-controller="" asp-action="Create" id="btnPrint" class="btn btn-info btn-custom rounded-pill waves-effect waves-light">New</a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <ejs-grid id="Grid" dataSource="@ViewBag.dataSource" recordClick="recordClick"
+                  allowResizing="true"
+                  allowReordering="true"
+                  allowSorting="true"
+                  allowFiltering="true"
+                  allowExcelExport="true"
+                  allowPdfExport="true"
+                  rowHeight="32"
+                  showColumnChooser="true"
+                  toolbar="@( new List<string>() { "ColumnChooser", "ExcelExport", "PdfExport", "CsvExport", "Print"})">
+                <e-grid-filterSettings type="CheckBox"></e-grid-filterSettings>
+                <e-grid-columns>
+                    <e-grid-column field="NO" headerText="No" customAttributes=@(new{@class="customCss"}) width="80"></e-grid-column>
+                    <e-grid-column type="CheckBox" headerText="CPL" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="80"></e-grid-column>
+                    <e-grid-column field="RVS" headerText="Rvs" customAttributes=@(new{@class="customCss"}) width="150"></e-grid-column>
+                    <e-grid-column field="CLASS" headerText="Class" customAttributes=@(new{@class="customCss"}) width="150"></e-grid-column>
+                    <e-grid-column field="WORK_ID" headerText="Work Id." customAttributes=@(new{@class="customCss"}) width="160"></e-grid-column>
+                    <e-grid-column field="CERT_NUMBER" headerText="Cert No." customAttributes=@(new{@class="customCss"}) width="160"></e-grid-column>
+                    <e-grid-column field="PIC" headerText="P.I.C" customAttributes=@(new{@class="customCss"}) width="250"></e-grid-column>
+                    <e-grid-column field="TYPE_OF_INSPECTION" headerText="Type of Inspection" customAttributes=@(new{@class="customCss"}) width="150"></e-grid-column>
+                    <e-grid-column field="DESCRIPTION" headerText="Description" customAttributes=@(new{@class="customCss"}) width="300"></e-grid-column>
+                    <e-grid-column field="CLIENT" headerText="Client" customAttributes=@(new{@class="customCss"}) width="150"></e-grid-column>
+                    <e-grid-column field="JOB_ID_NUMBER" headerText="Job Id No." customAttributes=@(new{@class="customCss"}) width="90"></e-grid-column>
+                    <e-grid-column field="ISSUE_DATE" headerText="Issue Date" customAttributes=@(new{@class="customCss"}) width="200"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
+        </div>
+    </div>
+    <script>
+        function recordClick(args) {
+            //window.location.href = "/CetCertificateMaster/Detail/" + args.rowData.PROJECT_IDX;
+        }
+    </script>
+}
+
+    @section Scripts{
+}

@@ -1,0 +1,170 @@
+﻿@using NavesPortalforWebWithCoreMvc.Common;
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Notifications;
+@model NavesPortalforWebWithCoreMvc.Models.TNAV_CET_TA_CERT;
+
+@{
+    Layout = "_PopUpLayout";
+}
+@{
+    ViewBag.PageTitle = "TA Cert Insert/Modify"; 
+    ViewBag.Title = "Annext to Cert";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <div class="ps-2 pageContentTitle">
+        <h3 class="fw-bold">@ViewBag.Title</h3>
+    </div>
+    <div class="ps-1">
+    </div>
+</div>
+
+    <form asp-controller="CetTACertificate" asp-action="SaveAnnexToCert" id="textSave" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mx-0 row">
+            <div class="col-sm-12 py-1">
+                <ejs-richtexteditor type="text" id="txtAnnexToCert" ejs-for="ANNEX_TO_CERT" height="700" cssClass="e-outline text-left inputable">
+                    <e-richtexteditor-toolbarsettings type="Expand" enableFloating="true" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                </ejs-richtexteditor>
+            </div>
+        </div>
+       
+        <div class="d-none">
+            <input type="hidden" asp-for="TA_CERT_IDX" />
+        </div>
+
+        <div class="mx-0 row bprder border-bottom">
+            <div class="col-sm-12 py-1">
+                @{
+                    var asyncSettings = new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("~/Uploader/SaveUploadFilesContractDoc"), RemoveUrl = @Url.Content("~/Uploader/RemoveUploadFilesContractDoc"), };
+                }
+                <ejs-uploader id="UploadFilesContractDoc" asyncSettings="@asyncSettings"
+                          maxFileSize="2147483648"
+                          autoUpload="false"
+                          multiple="true"
+                          uploading="OnFileUploading"
+                          selected="OnFileSelected"
+                          removing="OnFileRemoving"
+                          allowedExtensions="image/*, .pdf, .zip">
+                </ejs-uploader>
+                <input value="@ViewBag.ReleatedIdx" class="d-none" />
+
+                <script>
+                    function OnFileSelected(args) {
+                        for (var i = 0; i < args.filesData.length; i++) {
+                                args.filesData[i].name = "@ViewBag.CurrentIdx" + "__" + "@DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")" + "__" + args.filesData[i].name;
+                            }
+                        }
+
+                    function OnFileUploading(args) {
+                        args.customFormData = [
+                            { 'PlatformName': 'CET' },
+                            { 'CurrentDocIdx': "@ViewBag.CurrentIdx" },
+                            { 'Type': 'ContractDocument' },
+                            { 'ReleatedInfo': "@ViewBag.ReleatedIdx" },
+                            { 'OriginalFileName': args.fileData.id },
+                            { 'SavedFileName': args.fileData.name },
+                            { 'ProjectIdx': "@String.Empty" },
+                            { 'ProjectId': "@String.Empty" },
+                            { 'WorkIdx': "@String.Empty" },
+                            { 'WorkId': "@String.Empty" },
+                            { 'CreateUserName': "@ViewBag.UserName" }
+                        ];
+                    }
+
+                    function OnFileRemoving(args) {
+                        args.customFormData = [
+                            { 'PlatformName': 'CET' },
+                            { 'CurrentDocIdx': "@ViewBag.CurrentIdx" },
+                            { 'Type': 'ContractDocument' },
+                            { 'ReleatedInfo': "@ViewBag.ReleatedIdx" },
+                            { 'OriginalFileName': args.filesData[0].id },
+                            { 'SavedFileName': args.filesData[0].name },
+                            { 'ProjectIdx': "@String.Empty" },
+                            { 'ProjectId': "@String.Empty" },
+                            { 'WorkIdx': "@String.Empty" },
+                            { 'WorkId': "@String.Empty" },
+                            { 'CreateUserName': "@ViewBag.UserName" }
+                        ];
+                    }
+
+                    // session storage 사용
+                    //if (typeof (Storage) !== "undefined") {
+                    //    sessionStorage.setItem("data", "ANNEX_TO_CERT");
+                    //}
+
+                    // 자식창의 값을 부모창으로 보내기
+                    //function sendValueToParentWin(TA_CERT_IDX) {
+                    //    opener.recieveValueFromChildWin(TA_CERT_IDX);
+                    //    window.close();
+                    //}
+                              
+                </script>
+            </div>
+        </div>
+
+        <div class="float-end row mt-2 g-0">
+            <div class="col-auto pe-2">
+            </div>
+            <div class="col-auto pe-2">
+                <button type="button" id="btnSave" class="btn btn-primary btn-medium rounded-pill waves-effect waves-light" onclick="btnSaveClick()">Save</button>
+            </div>
+            <div class="col-auto pe-2">
+                <button id="btnClose" class="btn btn-primary btn-medium rounded-pill waves-effect waves-light" onclick="btnCloseClick()">Close</button>
+            </div>
+            <div class="col-auto pe-2">
+                <button id="btnDelete" class="btn btn-danger btn-medium rounded-pill waves-effect waves-light">Delete</button>
+            </div>
+        </div>
+        
+    </form>
+
+<script>
+
+    var PopupWindow;
+
+    function btnSaveClick(){ 
+        SaveAnnexToCert();
+    }
+
+    function btnCloseClick() { 
+        PopupWindow.hide();
+    }
+
+    function InitServiceLifeSetTerm(){
+        PopupWindow.style, display = 'block';
+    }
+
+    function SaveAnnexToCert() {
+        var annexToCert = document.getElementById("txtAnnexToCert").ej2_instances[0];
+        //console.log(annexToCert);
+        //console.log(annexToCert.value);
+
+        var param = {};
+
+        //json 방식
+        param.ANNEX_TO_CERT = annexToCert.value;
+
+        //string 방식
+        //param = "ANNEX_TO_CERT=" + annexToCert.value + "&IDX=12354";
+ 
+            $.ajax({
+                url: "@Url.Action("SaveAnnexToCert")",
+                contentType: "application/x-www-form-urlencoded",
+                dataType: "json",
+                type: "post",
+                data: param,
+                success: function(response) {
+                    //annexToCert.val(response);
+                        console.log(response);
+                    alert("저장 되었습니다.");
+
+                },   
+                error: function(data) {
+                        console.log(data);
+                        alert("Error");
+            }
+                });
+        }
+ 
+</script>

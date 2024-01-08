@@ -1,0 +1,95 @@
+﻿@using NavesPortalforWebWithCoreMvc.Common;
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Notifications;
+@model NavesPortalforWebWithCoreMvc.Models.TNAV_CET_SERVICE_SUPPLIER;
+
+@{
+    Layout = "_PopUpLayout";
+}
+@{
+    ViewBag.PageTitle = "TA Cert Insert/Modify"; 
+    ViewBag.Title = "Special Character List";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <div class="ps-1 pageContentTitle">
+        <h3 class="fw-bold">@ViewBag.Title</h3>
+    </div>
+    <div class="ps-1">
+    </div>
+</div>
+
+<style>
+  table {
+    width: 100%;
+    border-top: 1px solid #444444;
+    border-collapse: collapse;  
+  }
+  th, td {
+    border-bottom: 1px solid #444444;
+    border-left: 1px solid #444444;
+    /*padding: 10px;*/
+    font-size: 2em;
+  }
+  th:first-child, td:first-child {
+    border-left: none;
+  }
+</style>
+
+<table border="1">
+    <tr>
+        <td>㎟</td>
+        <td>㎠</td>
+        <td>㎡</td>
+        <td>㎢</td>
+        <td>㎣</td>
+        <td>㎤</td>
+        <td>㎥</td>
+    </tr>
+    <tr>
+        <td>㎦</td>
+        <td>㎖</td>
+        <td>㎗</td>
+        <td>ℓ</td>
+        <td>㎘</td>
+        <td>㎍</td>
+        <td>㎎</td>
+    </tr>
+    <tr>
+        <td>㎏</td>
+        <td>㏏</td>
+        <td>㎈</td>
+        <td>㎉</td>
+        <td>㎧</td>
+        <td>㎨</td>
+        <td>㏈</td>
+    </tr>
+    <tr>
+        <td>㎭</td>
+        <td>㏄</td>
+        <td>Φ</td>
+        <td>㎚</td>
+        <td>㎛</td>
+        <td>㎜</td>
+        <td>㎝</td>
+    </tr>
+    <tr>
+        <td>㎞</td>
+        <td>μ</td>
+        <td>㏊</td>
+        <td>℃</td>
+        <td>Å</td>
+        <td>℉</td>
+        <td>Ω</td>
+    </tr>
+    <tr>
+        <td>㏀</td>
+        <td>㏁</td>
+        <td>￠</td>
+        <td>㏖</td>
+        <td>CO2</td>
+        <td>~</td>
+        <td></td>
+    </tr>
+</table>
+

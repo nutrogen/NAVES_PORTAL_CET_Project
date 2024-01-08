@@ -1,0 +1,125 @@
+﻿@using Syncfusion.EJ2
+@{
+    ViewBag.PageTitle = "CET > TACertificate";
+    ViewBag.PlatformName = "CET";
+    ViewBag.MenuName = "TA Cert List";
+    ViewBag.FunctionName = "List";
+}
+
+@section SearchSection{
+        <div class="row align-items-center m-0">
+            <div class="col">
+                <ejs-textbox id="SearchString" name="SearchString" value="@ViewBag.SearchString" cssClass="e-outline inputable" placeholder="Search Keyword..."></ejs-textbox>
+            </div>
+            <div class="col-auto">
+                Period
+            </div>
+            <div class="col-2">
+                <ejs-datepicker id="StartDate" name="StartDate" value="@ViewBag.StartDate" value="@DateTime.Now.AddYears(-1).ToShortDateString()" format="yyyy-MM-dd" placeholder="Start Date..." cssClass="inputable"></ejs-datepicker>
+            </div>
+            <div class="col-2">
+                <ejs-datepicker id="EndDate" name="EndDate" value="@ViewBag.EndDate" value="@DateTime.Now.ToShortDateString()" format="yyyy-MM-dd" placeholder="End Date..." cssClass="inputable"></ejs-datepicker>
+            </div>
+            <div class="col">
+                <button asp-controller="CetTACertificate" asp-action="Index" id="Search" type="submit" class="btn btn-purple btn-medium rounded-pill waves-effect waves-light">Search</button>
+            </div>
+        </div>   
+}
+
+@section ContentsSection{
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="ps-2 pageContentTitle">
+            <h3>@ViewBag.MenuName</h3>
+        </div>
+        <div class="ps-1">
+            <a asp-controller="CetTACertificate" asp-action="Create" id="btnNew" class="btn btn-info btn-custom rounded-pill waves-effect waves-light">New</a>          
+        </div>      
+    </div>
+
+    <div>      
+        <ejs-grid id="Grid" dataBound="dataBound" recordClick="recordClick" 
+                height="510"
+                allowMultiSorting="true"
+                allowTextWrap="true"
+                allowResizing="true"
+                allowReordering="true"
+                allowSorting="true"
+                allowFiltering="true"
+                allowExcelExport="true"
+                allowPdfExport="true"
+                allowGrouping="true"
+                allowPaging="true"
+                showColumnChooser="true"
+                toolbar="@( new List<string>() { "ColumnChooser", "ExcelExport", "PdfExport", "CsvExport", "Print"})">
+            <e-grid-loadingIndicator indicatorType="Shimmer"></e-grid-loadingIndicator>
+            <e-data-manager url="@Url.Action("UrlDataSource", "CetTACertificate",  new {SearchString = "", StartDate = @DateTime.Now.AddYears(-3).ToShortDateString(), EndDate = @DateTime.Now.ToShortDateString()} )" adaptor="UrlAdaptor" crossdomain="true"></e-data-manager>
+            <e-grid-filterSettings type="CheckBox"></e-grid-filterSettings>
+            <e-grid-pagesettings pageCount="10" pageSize="15" pageSizes="@(new string[] {"10", "15", "20" , "50", "All" })"></e-grid-pagesettings>
+            <e-grid-groupSettings enableLazyLoading="true" allowReordering="true" showDropArea="true"></e-grid-groupSettings>
+            <e-grid-columns>
+                <e-grid-column field="NO" headerText="No" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="100"></e-grid-column>
+                <e-grid-column field="WORK_ID" headerText="Work ID" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="150"></e-grid-column>
+                <e-grid-column field="CERT_NUMBER" headerText="Cert No." customAttributes=@(new{@class="customCss"}) textAlign="Center" width="150"></e-grid-column>
+                <e-grid-column field="INITIAL_DATE" headerText="Initial Date" customAttributes=@(new{@class="customCss"}) textAlign="Left" width="400"></e-grid-column>
+                <e-grid-column field="DATE_OF_ISSUE" headerText="Issue Date" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="150"></e-grid-column>
+                <e-grid-column field="DATE_OF_EXPIRATION" headerText="Date of Expiration" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="170"></e-grid-column>
+                <e-grid-column field="DATE_OF_PLAN_AUDIT" headerText="Date of Plan Audit" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="150"></e-grid-column>
+                <e-grid-column field="COMPANY" headerText="Company" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="200"></e-grid-column>
+                <e-grid-column field="PRODUCT_NAME" headerText="Product Name" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="200"></e-grid-column>
+                <e-grid-column field="MANUFACTURER" headerText="Manufacturer" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="200"></e-grid-column>
+                <e-grid-column field="SURVEYOR_NAME" headerText="Surveyor Name" format="C0" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="200"></e-grid-column>
+                <e-grid-column field="SURVEYOR_NUMBER" headerText="Surveyor Number" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="200"></e-grid-column>
+                <e-grid-column field="APPROVER" headerText="Approver" customAttributes=@(new{@class="customCss"}) textAlign="Center" width="200"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>     
+    </div>
+
+    <script>
+        
+    function recordClick(args) {
+         if(args.rowData.TA_CERT_IDX === null){
+            window.location.href = "/CetTACertificate/Create";
+         }
+        else{
+            window.location.href = "/CetTACertificate/Detail/" + args.rowData.TA_CERT_IDX;
+        }
+    }
+
+    function dataBound() { 
+        var grid = document.getElementById('Grid').ej2_instances[0];
+        grid.hideScroll();
+    }
+
+    </script>
+ }
+ 
+@section Scripts{
+    <script>
+    $(document).ready(function() {
+        
+        console.log(@Html.Raw(ViewBag.dataSourceJson));
+        $("#Search").click(function() {
+            gridRefresh("CetTACertificate", "Grid");
+        });
+
+        $("SearchString").keyup(function() {
+            if (window.event.keyCode == 13) {
+                gridRefresh("CetTACertificate", "Grid");
+            }
+        });
+
+        $("StartDate").keyup(function() {
+            if (window.event.keyCode == 13) {
+                gridRefresh("CetTACertificate", "Grid");
+            }
+        });
+
+        $("EndDate").keyup(function() {
+            if (window.event.keyCode == 13) {
+                gridRefresh("CetTACertificate", "Grid");
+            }
+        });
+    });
+
+    </script>
+}

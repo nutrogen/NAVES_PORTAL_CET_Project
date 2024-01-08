@@ -1,0 +1,87 @@
+﻿@using NavesPortalforWebWithCoreMvc.Common;
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Notifications;
+@model NavesPortalforWebWithCoreMvc.Models.TNAV_CET_NP_SS_CAP;
+
+@{
+    Layout = "_PopUpLayout";
+}
+@{
+    ViewBag.PageTitle = "TA Cert Insert/Modify"; 
+    ViewBag.Title = "Annext to Cert";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <div class="ps-2 pageContentTitle">
+        <h3 class="fw-bold">@ViewBag.Title</h3>
+    </div>
+    <div class="ps-1">
+    </div>
+</div>
+
+    <form asp-controller="CetNpSsCap" asp-action="AnnextToCertPopup" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mx-0 row">
+            <div class="col-sm-12 py-1">
+                <ejs-richtexteditor type="text" id="txtAttach" ejs-for="ANNEX_TO_CERT" height="700" cssClass="e-outline text-left inputable">
+                    <e-richtexteditor-toolbarsettings type="Expand" enableFloating="true" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                </ejs-richtexteditor>
+            </div>
+        </div>
+       
+        <div class="align-items-center mx-0 p-0 row">
+            <div class="col-sm-10 pe-0 mb-1">
+                 @{
+                    var asyncSettings_a = new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("~/Uploader/Save"), RemoveUrl = @Url.Content("~/Uploader/Remove"), };
+                  }
+                <ejs-uploader id="UploadFiles_A" asyncSettings="@asyncSettings_a"
+                        autoUpload="false"
+                        multiple="true"
+                        allowedExtensions="image/*, .pdf">
+                </ejs-uploader>               
+            </div>
+            <div class="col-sm-2 text-end mb-1">
+                <a asp-controller="CetTACertificate" asp-action="" id="btnAttach_A" style="width:100px" class="btn btn-info btn-custom rounded-pill waves-effect waves-light">Attach</a>
+            </div>
+            <div class="col-sm-10 pe-0 mb-1">
+                @{
+                    var asyncSettings_b = new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("~/Uploader/Save"), RemoveUrl = @Url.Content("~/Uploader/Remove"), };
+                 }
+                <ejs-uploader id="UploadFiles_B" asyncSettings="@asyncSettings_b"
+                        autoUpload="false"
+                        multiple="true"
+                        allowedExtensions="image/*, .pdf">
+                </ejs-uploader>               
+            </div>
+            <div class="col-sm-2 text-end mb-1">
+                <a asp-controller="CetTACertificate" asp-action="" id="btnAttach_B" style="width:100px" class="btn btn-info btn-custom rounded-pill waves-effect waves-light">Attach</a>
+            </div>
+            <div class="col-sm-10 pe-0 mb-1">
+                @{
+                    var asyncSettings_c = new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("~/Uploader/Save"), RemoveUrl = @Url.Content("~/Uploader/Remove"), };
+                 }
+                <ejs-uploader id="UploadFiles_C" asyncSettings="@asyncSettings_c"
+                        autoUpload="false"
+                        multiple="true"
+                        allowedExtensions="image/*, .pdf">
+                </ejs-uploader>            
+            </div>
+            <div class="col-sm-2 text-end mb-1">
+                <a asp-controller="CetTACertificate" asp-action="" id="btnAttach_C" style="width:100px" class="btn btn-info btn-custom rounded-pill waves-effect waves-light">Attach</a>
+            </div>
+        </div>
+
+        <div class="float-end row mt-2 g-0">
+                <div class="col-auto pe-2">
+                </div>
+                <div class="col-auto pe-2">
+                    <button type="submit" id="btnSave" class="btn btn-primary btn-medium rounded-pill waves-effect waves-light">Save</button>
+                </div>               
+                <div class="col-auto pe-2">
+                    <button id="btnDelete" class="btn btn-danger btn-medium rounded-pill waves-effect waves-light">Delete</button>
+                </div>
+            </div>
+        
+    </form>
+

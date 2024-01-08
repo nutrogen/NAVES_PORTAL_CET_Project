@@ -1,0 +1,349 @@
+﻿@using NavesPortalforWebWithCoreMvc.Common;
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Notifications;
+@*@model NavesPortalforWebWithCoreMvc.Models.TNAV_CET_TA_CERT;*@
+@model NavesPortalforWebWithCoreMvc.ViewModels.CetTACertViewModel;
+
+@{
+    ViewBag.PageTitle = "CET > TA Cert New/Detail";
+    ViewBag.PlatformName = "CET";
+    ViewBag.MenuName = "Type Approval Certificate";
+    ViewBag.FunctionName = "New";
+}
+
+@section ContentsSection{
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="ps-2 pageContentTitle">
+            <h3>Type Approval Certificate</h3>
+        </div>
+        <div></div>
+    </div>
+
+    <form asp-controller="CetTACertificate" asp-action="CreateConfirm" id="ParentWin" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="TA_CERT_IDX" />
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Work ID</label>
+            <div class="col-sm-4">
+                <ejs-autocomplete id="acWorkId" dataSource="@ViewBag.WorkId" ejs-for="WORK_ID" placeholder="Select Work ID..." autofill="true" filterType="Contains"
+                                    cssClass="inputable"
+                                    highlight="true"
+                                    suggestionCount="20"
+                                    minLength="3"
+                                    popupHeight="300px"
+                                    popupWidth="1000px"
+                                    headerTemplate="@Html.Raw("<div class=\"row m-2 p-1 fs-5 border-bottom border-2 bg-create-title\"><div class=\"col-2\">Work Id</div><div class=\"col-3\">Project Id</div><div class=\"col-3\">Project Title</div><div class=\"col-2\">Job Id</div></div>")"
+                                    itemTemplate="@Html.Raw("<div class=\"row border-bottom border-1\"><div class=\"col-2\">${WORK_ID}</div><div class=\"col-3\">${PROJECT_ID}</div><div class=\"col-3\">${PROJECT_TITLE}</div><div class=\"col-2\">${JOB_ID}</div></div>")"
+                                    change="OnChangeSelectWorkId">
+                    <e-autocomplete-fields value="WORK_ID"></e-autocomplete-fields>
+                </ejs-autocomplete>
+            </div>
+           @* <div class="col-6">
+                <label id="lblWorkId" class="col-form-label text-right"></label>
+            </div>*@
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Cert No.</label>
+            <div class="col-sm-2">
+                <ejs-textbox type="text" readonly id="txtCertNo" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+            <div class="col-sm-2 text-end">
+                <a id="btnCertNo" style="width:130px" class="btn btn-info btn-custom rounded-pill waves-effect waves-light">Create Cert No.</a>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Initial Date</label>
+            <div class="col-sm-4">
+                <ejs-datepicker id="TAInitialDate" ejs-for="INITIAL_DATE" format="yyyy-MM-dd" cssClass="inputable"></ejs-datepicker>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Date of Issue</label>
+            <div class="col-sm-4">
+                <ejs-datepicker id="TADateOfIssue" ejs-for="DATE_OF_ISSUE" format="yyyy-MM-dd" cssClass="inputable"></ejs-datepicker>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Date of Expiration</label>
+            <div class="col-sm-4">
+                <ejs-datepicker id="TADateOfExpiration" ejs-for="DATE_OF_EXPIRATION" format="yyyy-MM-dd" cssClass="inputable"></ejs-datepicker>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Date of Plan Audit</label>
+            <div class="col-sm-4">
+                <ejs-datepicker id="TADateOfPlanAudit" ejs-for="DATE_OF_PLAN_AUDIT" format="yyyy-MM-dd" cssClass="inputable"></ejs-datepicker>
+            </div>
+        </div>
+
+        <div class="align-item-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Kind of Certification</label>
+            <div class="col-sm-4">
+                <ejs-dropdownlist id="dlCertKind" ejs-for="KIND_OF_CERT" dataSource="@ViewBag.KindOfCertification" placeholder="Select kind of certificate.." popupHeight="220px" cssClass="inputable">
+                    <e-dropdownlist-fields text="Text" value="Value"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Division of Application</label>
+            <div class="col-sm-2 align-self-center">
+                <ejs-checkbox id="chkManufacturer" ejs-for="IS_MANUFACTURER" checked="true" label="Manufacturer" cssClass="pe-2"></ejs-checkbox>
+                <ejs-checkbox id="chkApplicant" ejs-for="IS_APPLICANT" checked="false" label="Applicant" cssClass="pe-2"></ejs-checkbox>
+            </div>
+        </div>
+     
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Company</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" id="txtCompany" ejs-for="COMPANY" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Product Name</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" id="txtProductName" ejs-for="PRODUCT_NAME" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Manufacturer</label>
+            <div class="col-sm-10">
+                <ejs-textbox type="text" id="txtNone5" ejs-for="MANUFACTURER" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+        </div>      
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Applicant</label>
+            <div class="col-sm-10">
+                <ejs-textbox type="text" id="txtNone6" ejs-for="APPLICANT" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom" style="height:200px;">
+            <div class="col-sm-2 text-end fw-bolder bg-create-title h-100 d-inline-block pt-1">Description</div>
+            <div class="col-sm-10">
+                <ejs-richtexteditor id="TADescription" ejs-for="DESCRIPTION" height="194" enableResize="false">
+                    <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                </ejs-richtexteditor>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 p-0 mb-4 row bprder border-bottom" style="height:200px;">
+            <div class="col-sm-2 text-end fw-bolder bg-create-title h-100 d-inline-block pt-1">Application Condition</div>
+            <div class="col-sm-10">
+                <ejs-richtexteditor id="TAAppCon" ejs-for="APPLICATION_CONDITION" height="194" enableResize="false">
+                    <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                </ejs-richtexteditor>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row">
+        <div class="ps-2 pageContentTitle">
+                <h3>A.Product Description</h3>
+            </div>
+            <div></div>
+        </div>
+
+        <div id="divProdSpec" class="m-0 p-0 mx-0">
+            <div class="mx-0 row border-bottom border-top">
+                <label class="col-sm-2 col-form-label fw-bolder text-end bg-create-title">1.Product Specification</label>
+                <div class="col-sm-10 align-self-center py-1">
+                    <ejs-richtexteditor id="txtProdSpec" ejs-for="PRODUCT_SPEC" height="194" enableResize="false">
+                        <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                    </ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+
+        <div id="divApproved" class="m-0 p-0">
+            <div class="mx-0 row border-bottom">
+                <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">2.Approved drawings and documents</label>
+                <div class="col-sm-10 align-self-center py-1">
+                    <ejs-richtexteditor id="txtApproved" ejs-for="APPROVED_DOCS" height="194" enableResize="false">
+                        <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                    </ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+
+        <div id="divTestRepor" class="m-0 p-0 mb-4 bprder border-bottom">
+            <div class="mx-0 row border-bottom">
+                <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">3.Test Reports, etc</label>
+                <div class="col-sm-10 align-self-center py-1">
+                    <ejs-richtexteditor id="txtTestRepor" ejs-for="TEST_DOCS" height="194" enableResize="false">
+                        <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                    </ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="ps-2 pageContentTitle">
+                <h3>B.Approval Condition</h3>
+            </div>
+            <div></div>
+        </div>
+
+        <div id="divApplLimit" class="m-0 p-0">
+            <div class="mx-0 row border-bottom border-top">
+                <label class="col-sm-2 col-form-label fw-bolder text-end bg-create-title">1.Application & Limitation</label>
+                <div class="col-sm-10 align-self-center py-1">
+                    <ejs-richtexteditor id="txtApplLimit" ejs-for="APPLICATION_LIMITATION" height="194" enableResize="false">
+                        <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                    </ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+
+        <div id="divOtherDocs" class="m-0 p-0">
+            <div class="mx-0 row border-bottom">
+                <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">2.Indivisual Product Cert. and Drawing Approval Requirement</label>
+                <div class="col-sm-10 align-self-center py-1">
+                    <ejs-richtexteditor id="txtOtherDocs" ejs-for="PRODUCT_CERT_DRAWING" height="194" enableResize="false">
+                        <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                    </ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+
+        <div id="divMarking" class="m-0 p-0">
+            <div class="mx-0 row border-bottom">
+                <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">3.Marketing</label>
+                <div class="col-sm-10 align-self-center py-1">
+                    <ejs-richtexteditor id="txtMarking" ejs-for="MARKING" height="194" enableResize="false">
+                        <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                    </ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+
+        <div id="divMarking" class="m-0 p-0">
+            <div class="mx-0 row border-bottom">
+                <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">4.Others</label>
+                <div class="col-sm-10 align-self-center py-1">
+                    <ejs-richtexteditor id="txtOthers" ejs-for="OTHERS" height="194" enableResize="false">
+                        <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                    </ejs-richtexteditor>
+                </div>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 p-0 mb-4 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Annex to Cert</label>
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-purple btn-custom rounded-pill waves-effect waves-light" style="width:130px" id="btnModiSert">Insert/Modify</button>
+            </div>
+        </div>
+
+        <div class="d-flex border-bottom justify-content-between align-items-center">
+            <div class="ps-2 pageContentTitle">
+                <h3>Approval Information</h3>
+            </div>
+            <div></div>
+        </div>
+        
+        <div class="align-items-center m-0 p-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Approver</label>
+            @*<div class="d-none">
+                <input type="text" id="CET_TA_APPROVER" asp-for="APPROVER" value="APPROVER" />
+            </div>*@
+            <div class="col-sm-4">
+              <ejs-dropdownlist id="CetSelectGM" ejs-for="APPROVER" dataSource="@ViewBag.Approver" cssClass="inputable"
+                    placeholder="Select GM...">
+                    <e-dropdownlist-fields text="USER_NAME_E" value="USER_ID"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Surveyor</label>
+            <div class="col-sm-4">               
+                @Model.SURVEYOR_NAME
+                @Model.SURVEYOR_NUMBER
+            </div>
+        </div>
+        
+        <div class="pt-2 pe-0">
+            <div class="float-start row g-0">
+                <div class="col-auto pe-2">
+                    <button id="btnPreview" style="width:100px" class="btn btn-success btn-medium rounded-pill waves-effect waves-light">Preview</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnShowLog" style="width:100px" class="btn btn-success btn-medium rounded-pill waves-effect waves-light">Show Log</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnChr" style="width:160px" class="btn btn-success btn-medium rounded-pill waves-effect waves-light">Special Character</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnCert" style="width:200px" class="btn btn-success btn-medium rounded-pill waves-effect waves-light">Request for Certification</button>
+                </div>
+                <div class="col-auto">
+                </div>
+            </div>
+            
+            <div class="float-end row g-0">
+                <div class="col-auto pe-2">
+                </div>
+                <div class="col-auto pe-2">
+                    <button type="submit" id="btnSave" class="btn btn-primary btn-medium rounded-pill waves-effect waves-light">SAVE</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnCopy" class="btn btn-primary btn-medium rounded-pill waves-effect waves-light">Copy</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnDelete" class="btn btn-danger btn-medium rounded-pill waves-effect waves-light">Delete</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    }
+
+   <script>
+
+    function OnChangeSelectWorkId(args) {
+        //if ($("#acWorkId").is(":focus") == false) { 
+        //    return;
+        //}
+
+        //if (args.value.length >= 3) {
+        //    var acWorkId = document.getElementById('acWorkId').ej2_instances[0];
+        //    var workIdText = acWorkId.itemData.PROJECT_ID + "&nbsp;" + acWorkId.itemData.PROJECT_TITLE + "&nbsp;" + acWorkId.itemData.JOB_ID;
+        //}
+    }
+
+    // 자식창으로 부터 값을 부모창에 저장하기
+    //function recieveValueFromChildWin(name) {
+    //    document.getElementById("ParentWin").value = name;
+    //}
+
+    // print out the value passed from session storage
+    //console.log("data");
+    </script>
+
+    @section Scripts{
+    <script>
+        // ModifyInsertPopup
+        $("#btnModiSert").click(function() {
+
+            var W = (screen.availWidth * 0.6);
+            var H = 1000;
+
+            var popupX = (screen.availWidth / 2) - (W / 2);
+            var popupY = (screen.availHeight / 2) - (H / 2);
+
+            var opt = "status=no,width=" + W + "px, height=" + H + "px, left=" + popupX + ", top=" + popupY + ",scrollbars=yes";
+            var popup = window.open('@Url.Action("InsertModifyPopup", "CetTACertificate", new{})', 'LogList', opt); 
+
+            popup.opener = window;
+            popup.focus();
+        });
+
+        // SpecialCharPopup
+        $("#btnChr").click(function() {
+
+            var W = (screen.availWidth * 0.4);
+            var H = 500;
+
+            var popupX = (screen.availWidth / 2) - (W / 2);
+            var popupY = (screen.availHeight / 2) - (H / 2);
+
+            var opt = "status=no,width=" + W + "px, height=" + H + "px, left=" + popupX + ", top=" + popupY + ",scrollbars=yes";
+            var popup = window.open('@Url.Action("SpecialCharPopup", "CetTACertificate", new{})', 'LogList', opt); 
+
+            popup.opener = window;
+            popup.focus();
+        });
+
+        //OnChangeSelectGM();
+     
+    </script>
+    }

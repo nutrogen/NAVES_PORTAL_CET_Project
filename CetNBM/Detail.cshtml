@@ -1,0 +1,235 @@
+﻿@using NavesPortalforWebWithCoreMvc.Common;
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Notifications;
+@model NavesPortalforWebWithCoreMvc.Models.TNAV_CET_NBM;
+
+@{
+    ViewBag.PageTitle = "CET > NBM New/Detail";
+    ViewBag.PlatformName = "CET";
+    ViewBag.MenuName = "Naval New Building Master";
+    ViewBag.FunctionName = "New";
+}
+
+@section ContentsSection{
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="ps-2 pageContentTitle">
+            <h3>Naval New Building Master</h3>
+        </div>
+        <div></div>
+    </div>
+
+    <form asp-controller="CetNBM" asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Work ID</label>
+            <div class="col-sm-4">
+                <ejs-autocomplete id="acWorkId" dataSource="@ViewBag.WorkId" ejs-for="WORK_ID" placeholder="Select Work ID..." autofill="true" filterType="Contains"
+                                    cssClass="inputable"
+                                    highlight="true"
+                                    suggestionCount="20"
+                                    minLength="3"
+                                    popupHeight="300px"
+                                    popupWidth="1000px"
+                                    headerTemplate="@Html.Raw("<div class=\"row m-2 p-1 fs-5 border-bottom border-2 bg-create-title\"><div class=\"col-2\">Work Id</div><div class=\"col-3\">Project Id</div><div class=\"col-3\">Project Title</div><div class=\"col-2\">Job Id</div></div>")"
+                                    itemTemplate="@Html.Raw("<div class=\"row border-bottom border-1\"><div class=\"col-2\">${WORK_ID}</div><div class=\"col-3\">${PROJECT_ID}</div><div class=\"col-3\">${PROJECT_TITLE}</div><div class=\"col-2\">${JOB_ID}</div></div>")"
+                                    change="OnChangeSelectWorkId">
+                    <e-autocomplete-fields value="WORK_ID"></e-autocomplete-fields>
+                </ejs-autocomplete>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Cert No.</label>
+            <div class="col-sm-2">
+                <ejs-textbox type="text" readonly id="txtStatNo" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+            <div class="col-sm-2 text-end">
+                <a id="btnExport" style="width:130px" class="btn btn-info btn-custom rounded-pill waves-effect waves-light">Create Cert No.</a>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Date of Issue</label>
+            <div class="col-sm-4">
+                <ejs-datepicker id="IssueofDate" ejs-for="DATE_OF_ISSUE" format="yyyy-MM-dd" cssClass="inputable"></ejs-datepicker>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Date of Build</label>
+            <div class="col-sm-4">
+                <ejs-datepicker id="BuildDate" ejs-for="DATE_OF_BUILD" format="yyyy-MM-dd" cssClass="inputable"></ejs-datepicker>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">NSN No.</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="NSN_NUMBER" readonly id="txtNsnNo" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Home Port</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="HOME_PORT" readonly id="txtHomePort" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Flag</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="FLAG" readonly id="txtFlag" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Place of Issue</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="ISSUE_PLACE" readonly id="txtIssue" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Name of Ship / Ship Type</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="SHIP_NAME_TYPE" readonly id="txtShipType" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Tonnage</label>
+            <div class="col-sm-2">
+                <ejs-textbox type="text" ejs-for="TONNAGE__NUMBER" readonly id="txtTonnage" cssClass="e-outline text-left inputable" disabled></ejs-textbox>
+            </div>
+            <div class="col-sm-2">
+                <ejs-dropdownlist id="TonnageDr" popupHeight="220px" dataSource="@ViewBag.TonnageDropdownList" placeholder="--Select--" cssClass="inputable">
+                    <e-dropdownlist-fields text="Name" value="Value"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Owners</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="OWNERS" readonly id="txtOwners" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Builder</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="BUILDER" readonly id="txtBuilder" cssClass="e-outline text-left" disabled></ejs-textbox>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Place of Build</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="PLACE_OF_BUILD" id="txtPlace" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Applicable Rules</label>
+            <div class="col-sm-4">
+                <ejs-textbox type="text" ejs-for="APPLICABLE_RULES" id="txtRules" cssClass="e-outline text-left inputable"></ejs-textbox>
+            </div>
+        </div>
+
+        <div class="align-items-center mx-0 mb-4 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title" style="height:240px">Notation / Marking</label>
+            <div class="col-sm-10">
+                <div class="col-4 mb-1">
+                    <ejs-dropdownlist id="NotaMarkSelect" popupHeight="220px" placeholder="--Select--" dataSource="@ViewBag.NotaMarkSelect" cssClass="inputable">
+                        <e-dropdownlist-fields text="Name" value="Value"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                </div>
+                <div>
+                    <ejs-richtexteditor id="txtNotaMark" ejs-for="NOTATION_MARKING_TEXT" height="194" enableResize="false">
+                        <e-richtexteditor-toolbarsettings type="Expand" enableFloating="false" items="@CommonSettingData.getBasicRichTextEditorItemLists()"></e-richtexteditor-toolbarsettings>
+                    </ejs-richtexteditor>
+                </div>
+            </div>          
+        </div>
+      
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="ps-2 pageContentTitle">
+                <h3>Approval Information</h3>
+            </div>
+            <div></div>
+        </div>
+
+        <div class="align-items-center mx-0 row bprder border-bottom">
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Approver</label>
+            <div class="col-sm-4">
+                <ejs-dropdownlist id="CetSelectGM" ejs-for="APPROVER" dataSource="@ViewBag.Approver" cssClass="inputable"
+                    placeholder="Select GM...">
+                    <e-dropdownlist-fields text="USER_NAME_E" value="USER_ID"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>          
+            <label class="col-sm-2 col-form-label text-end fw-bolder bg-create-title">Surveyor</label>
+            <div class="col-sm-4">
+                @Model.SURVEYOR_NAME
+                @Model.SURVEYOR_NUMBER
+            </div>
+        </div>
+
+        <div class="d-none">
+            <input type="hidden" id="hdIsClickSave" />
+            <input type="hidden" asp-for="NBM_IDX" />
+        </div>
+
+        <div class="pt-2 pe-0">
+            <div class="float-start row g-0">
+                <div class="col-auto pe-2">
+                    <button id="btnPreview" style="width:100px" class="btn btn-success btn-medium rounded-pill wasves-effect waves-light">Preview</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnLog" style="width:100px" class="btn btn-success btn-medium rounded-pill wasves-effect waves-light">Show Log</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnChr" style="width:160px" class="btn btn-success btn-medium rounded-pill wasves-effect waves-light">Special Character</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnCert" style="width:200px" class="btn btn-success btn-medium rounded-pill wasves-effect waves-light">Request for Certification</button>
+                </div>
+                <div class="col-auto">
+                </div>
+            </div>
+            <div class="float-end row g-0">
+                <div class="col-auto pe-2">
+                </div>
+                <div class="col-auto pe-2">
+                    <button type="submit" id="btnSave" class="btn btn-primary btn-medium rounded-pill wasves-effect waves-light">Save</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnCopy" class="btn btn-primary btn-medium rounded-pill wasves-effect waves-light">Copy</button>
+                </div>
+                <div class="col-auto pe-2">
+                    <button id="btnDelete" class="btn btn-danger btn-medium rounded-pill wasves-effect waves-light">Delete</button>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+<script>
+     function OnChangeSelectWorkId(args) { 
+        if ($("#acWorkId").is(":focus") == false) {
+            return;         
+        }       
+    }
+
+    function OnChangeSelectingTonnageDr(args) {
+        if ($("#TonnageDr").is(":focus") == false) {
+            return;
+        }
+
+        if (args.value.length >= 3) {
+            var TonnageDr = document.getElementById('TonnageDr').ej2_instances[0];
+            return;
+        }
+    }
+  
+</script>
+
+@section Scripts {
+    <script>
+       // Special Character window Popup
+        $("#btnChr").click(function() {
+
+            var W = (screen.availWidth * 0.3);
+            var H = 500;
+
+            var popupX = (screen.availWidth / 2) - (W / 2);
+            var popupY = (screen.availHeight / 2) - (H / 2);
+
+            var opt = "status=no,width=" + W + "px, height=" + H + "px, left=" + popupX + ", top=" + popupY + ",scrollbars=yes";
+            var popup = window.open('@Url.Action("SpecialCharPopup", "CetNBM", new{})', 'LogList', opt);
+
+            popup.opner = window;
+            popup.focus();
+        });
+
+    </script>
+}
